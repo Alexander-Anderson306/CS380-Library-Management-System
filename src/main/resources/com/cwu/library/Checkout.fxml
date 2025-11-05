@@ -109,8 +109,8 @@
                         <TextField fx:id="nameTextBox" alignment="CENTER" text="John Student" />
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Publication Year" />
                         <TextField fx:id="studentIdTextBox" alignment="CENTER" promptText="enter student id" />
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Book ID" />
-                        <TextField fx:id="bookIdTextBox" alignment="CENTER" promptText="enter book id or search for book" />
+                        <Text fx:id="idText" strokeType="OUTSIDE" strokeWidth="0.0" text="Book ID" />
+                        <TextField fx:id="idTextBox" alignment="CENTER" promptText="enter book id or search for book" />
                      </children>
                   </VBox>
                </children>

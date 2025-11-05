@@ -6,13 +6,14 @@ import javafx.scene.control.Button;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
+import javafx.scene.text.Text;
 import java.util.List;
 
 public class CheckoutControler implements Searchable{
     private boolean isBookMode = true;
 
     @FXML
-    private TextField bookIdTextBox;
+    private TextField idTextBox;
 
     @FXML
     private MenuItem bookMenu;
@@ -45,6 +46,9 @@ public class CheckoutControler implements Searchable{
     private Button switchButton;
 
     @FXML
+    private Text idText;
+
+    @FXML
     void checkout(ActionEvent event) {
 
     }
@@ -69,7 +73,17 @@ public class CheckoutControler implements Searchable{
 
     @FXML
     void switchItem(ActionEvent event) {
-
+        if(isBookMode) {
+            isBookMode = false;
+            switchButton.setText("CD");
+            idText.setText("CD ID");
+            idTextBox.setPromptText("enter cd id or search for cd");
+        } else {
+            isBookMode = true;
+            switchButton.setText("Book");
+            idText.setText("Book ID");
+            idTextBox.setPromptText("enter book id or search for book");
+        }
     }
 
     /**
