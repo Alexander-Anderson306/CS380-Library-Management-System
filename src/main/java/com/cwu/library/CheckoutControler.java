@@ -6,8 +6,10 @@ import javafx.scene.control.Button;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
+import java.util.List;
 
-public class CheckoutControler {
+public class CheckoutControler implements Searchable{
+    private boolean isBookMode = true;
 
     @FXML
     private TextField bookIdTextBox;
@@ -48,8 +50,16 @@ public class CheckoutControler {
     }
 
     @FXML
-    void openSearch(ActionEvent event) {
-
+    public void search(ActionEvent event) {
+        if(isBookMode) {
+            //load the book search popup
+            BookSearchControler controler = App.openPopup("BookSearch.fxml", BookSearchControler.class);
+            controler.setParentController(this);
+        } else {
+            //load the cd search popup
+            CDSearchControler controler = App.openPopup("CDSearch.fxml", CDSearchControler.class);
+            controler.setParentController(this);
+        }
     }
 
     @FXML
@@ -89,4 +99,7 @@ public class CheckoutControler {
         App.switchScene("StudentInventory.fxml");
     }
 
+    public void recieveData(List<String> data) {
+        //handle data received from search popup
+    }
 }

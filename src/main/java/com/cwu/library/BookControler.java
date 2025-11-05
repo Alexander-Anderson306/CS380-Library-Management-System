@@ -7,8 +7,9 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import java.util.List;
 
-public class BookControler {
+public class BookControler implements Searchable {
 
     @FXML
     private Button addOrModButton;
@@ -57,7 +58,7 @@ public class BookControler {
     }
 
     @FXML
-    void search(ActionEvent event) {
+    public void search(ActionEvent event) {
 
     }
 
@@ -88,4 +89,7 @@ public class BookControler {
         App.switchScene("StudentInventory.fxml");
     }
 
+    public void recieveData(List<String> data) {
+
+    }
 }

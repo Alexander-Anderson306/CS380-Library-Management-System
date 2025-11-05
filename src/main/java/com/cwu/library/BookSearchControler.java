@@ -7,7 +7,8 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 
-public class BookSearchControler {
+public class BookSearchControler implements Popup {
+    private Searchable parentController;
 
     @FXML
     private TextField authorTextBox;
@@ -34,13 +35,17 @@ public class BookSearchControler {
     private TextField yearTextBox;
 
     @FXML
-    void confirmSelection(ActionEvent event) {
+    public void confirm(ActionEvent event) {
 
     }
 
     @FXML
-    void search(ActionEvent event) {
+    public void sendQuery(ActionEvent event) {
 
+    }
+
+    public void setParentController(Searchable parent) {
+        this.parentController = parent;
     }
 
 }

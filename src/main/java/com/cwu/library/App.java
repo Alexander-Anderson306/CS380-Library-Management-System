@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -35,6 +36,36 @@ public class App extends Application {
             primaryStage.setScene(scene);
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    /**
+     * Opens a popup window with the specified FXML file and returns its controller.
+     * @param fxmlFile
+     * @param controllerClass The class of the controller.
+     * @param <T> The type of the controller (I.E a class).
+     * @return The controller of the popup window.
+     */
+    public static <T> T openPopup(String fxmlFile, Class<T> controllerClass) {
+        try {
+            FXMLLoader loader = new FXMLLoader(App.class.getResource(fxmlFile));
+            Parent root = loader.load();
+
+            //give popup reference to its parent stage
+            Stage popupStage = new Stage();
+            popupStage.setScene(new Scene(root));
+            popupStage.setTitle("Search");
+            popupStage.initOwner(primaryStage);
+            //user cannot interact with primary stage while popup is open
+            popupStage.initModality(Modality.WINDOW_MODAL);
+            popupStage.showAndWait();
+
+            //return the controller of the popup
+            return controllerClass.cast(loader.getController());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
         }
     }
 

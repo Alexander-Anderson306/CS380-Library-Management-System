@@ -7,7 +7,8 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 
-public class CDSearchControler {
+public class CDSearchControler implements Popup {
+    private Searchable parentController;
 
     @FXML
     private TextArea callNumberTextArea;
@@ -28,13 +29,16 @@ public class CDSearchControler {
     private TextField yearTextBox;
 
     @FXML
-    void confirm(ActionEvent event) {
+    public void confirm(ActionEvent event) {
 
     }
 
     @FXML
-    void search(ActionEvent event) {
+    public void sendQuery(ActionEvent event) {
 
     }
 
+    public void setParentController(Searchable parentController) {
+        this.parentController = parentController;
+    }
 }
