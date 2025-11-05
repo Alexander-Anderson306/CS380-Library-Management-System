@@ -4,12 +4,19 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
 
 public class CheckoutControler {
 
     @FXML
     private TextField bookIdTextBox;
+
+    @FXML
+    private MenuItem bookMenu;
+
+    @FXML
+    private MenuItem cdMenu;
 
     @FXML
     private Button checkoutButton;
@@ -28,6 +35,9 @@ public class CheckoutControler {
 
     @FXML
     private TextField studentIdTextBox;
+
+    @FXML
+    private MenuItem studentMenu;
 
     @FXML
     private Button switchButton;
@@ -49,6 +59,21 @@ public class CheckoutControler {
 
     @FXML
     void switchItem(ActionEvent event) {
+
+    }
+
+    @FXML
+    void switchToBook(ActionEvent event) {
+
+    }
+
+    @FXML
+    void switchToCD(ActionEvent event) {
+
+    }
+
+    @FXML
+    void switchToStudent(ActionEvent event) {
 
     }
 
