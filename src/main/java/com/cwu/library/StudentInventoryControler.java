@@ -35,6 +35,9 @@ public class StudentInventoryControler {
     private TextField studentIdTextBox;
 
     @FXML
+    private Button removeStudentButton;
+
+    @FXML
     void search(ActionEvent event) {
 
     }
@@ -64,6 +67,10 @@ public class StudentInventoryControler {
     @FXML
     void switchToCheckout(ActionEvent event) {
         App.switchScene("Checkout.fxml");
+    }
+
+    @FXML
+    void removeStudent(ActionEvent event) {
     }
 
 }

@@ -64,4 +64,37 @@ public class SQLHandler {
             e.printStackTrace();
         }
     }
+
+    /**
+     * Adds a student to the database.
+     * @param person
+     */
+    public static void addStudent(Person person)  {
+        try {
+            PreparedStatement ps = conn.prepareStatement("INSERT INTO student (student_id, fname, lname) VALUES (?, ?, ?)");
+            ps.setInt(1, person.getId());
+            ps.setString(2, person.getFirstName());
+            ps.setString(3, person.getLastName());
+            ps.execute();
+            ps.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Removes a student from the database.
+     * @param studentId
+     */
+    public static void removeStudent(int studentId) {
+        try {
+            PreparedStatement ps = conn.prepareStatement("DELETE FROM student WHERE student_id = ?");
+            ps.setInt(1, studentId);
+            ps.execute();
+            ps.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
 }
