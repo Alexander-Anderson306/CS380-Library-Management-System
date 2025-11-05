@@ -62,19 +62,31 @@ public class CheckoutControler {
 
     }
 
+    /**
+     * Switches to the Book scene.
+     * @param event
+     */
     @FXML
     void switchToBook(ActionEvent event) {
-
+        App.switchScene("Book.fxml");
     }
 
+    /**
+     * Switches to the CD scene.
+     * @param event
+     */
     @FXML
     void switchToCD(ActionEvent event) {
-
+        App.switchScene("CD.fxml");
     }
 
+    /**
+     * Switches to the Student scene.
+     * @param event
+     */
     @FXML
     void switchToStudent(ActionEvent event) {
-
+        App.switchScene("StudentInventory.fxml");
     }
 
 }

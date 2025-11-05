@@ -24,6 +24,10 @@ public class App extends Application {
 
     }
 
+    /**
+     * Switches the scene to the specified FXML file.
+     * @param fxmlFile
+     */
     public static void switchScene(String fxmlFile) {
         try {
             Parent root = FXMLLoader.load(App.class.getResource(fxmlFile));

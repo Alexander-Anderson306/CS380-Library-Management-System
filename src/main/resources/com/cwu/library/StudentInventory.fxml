@@ -50,7 +50,7 @@
   <children>
     <MenuBar fx:id="menuBar" VBox.vgrow="NEVER">
       <menus>
-        <Menu mnemonicParsing="false" text="File">
+        <Menu mnemonicParsing="false" text="Student Inventory">
           <items>
             <MenuItem fx:id="checkoutMenu" mnemonicParsing="false" onAction="#switchToCheckout" text="Checkout" />
             <MenuItem fx:id="bookMenu" mnemonicParsing="false" onAction="#switchToBook" text="Book" />

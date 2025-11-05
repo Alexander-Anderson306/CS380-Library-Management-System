@@ -55,19 +55,31 @@ public class CDControler {
 
     }
 
+    /**
+     * Switches to the Book scene.
+     * @param event
+     */
     @FXML
     void switchToBook(ActionEvent event) {
-
+        App.switchScene("Book.fxml");
     }
 
+    /**
+     * Switches to the Checkout scene.
+     * @param event
+     */
     @FXML
     void switchToCheckout(ActionEvent event) {
-
+        App.switchScene("Checkout.fxml");
     }
 
+    /**
+     * Switches to the Student scene.
+     * @param event
+     */
     @FXML
     void switchToStudent(ActionEvent event) {
-
+        App.switchScene("StudentInventory.fxml");
     }
 
 }
