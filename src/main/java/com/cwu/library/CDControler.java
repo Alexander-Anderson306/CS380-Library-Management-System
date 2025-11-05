@@ -52,7 +52,9 @@ public class CDControler implements Searchable {
 
     @FXML
     public void search(ActionEvent event) {
-
+        //load the cd search popup
+        CDSearchControler controler = App.openPopup("CDSearch.fxml", CDSearchControler.class);
+        controler.setParentController(this);
     }
 
     /**

@@ -59,7 +59,9 @@ public class BookControler implements Searchable {
 
     @FXML
     public void search(ActionEvent event) {
-
+        //load the book search popup
+        BookSearchControler controler = App.openPopup("BookSearch.fxml", BookSearchControler.class);
+        controler.setParentController(this);
     }
 
     /**
