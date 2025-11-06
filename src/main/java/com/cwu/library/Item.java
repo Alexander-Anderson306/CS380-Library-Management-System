@@ -85,4 +85,18 @@ class Item {
         setAttribute("callNumber", callNumber);
 
     }
+
+
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Item ID: ").append(id);
+        for(String key : attributes.keySet()) {
+            sb.append(", ").append(key).append(": ").append(attributes.get(key));
+        }
+        return sb.toString();
+    }
+
+    public boolean equals(Item other) {
+        return this.id == other.id;
+    }
 }

@@ -790,4 +790,19 @@ public class SQLHandler {
             e.printStackTrace();
         }
     }
+
+    /**
+     *  This subclass is used to intersect two sets of data (linked list) and return the common elements.
+     */
+    public class Intersect {
+        public static <T> LinkedList<T> intersect(LinkedList<T> list1, LinkedList<T> list2) {
+            LinkedList<T> result = new LinkedList<>();
+            for(T item : list1) {
+                if(list2.contains(item)) {
+                    result.add(item);
+                }
+            }
+            return result;
+        }
+    }
 }

@@ -32,4 +32,8 @@ class Person {
     public String getLastName() {
         return lastName;
     }
+
+    public String toString() {
+        return "Id:" + id + " Name:" + firstName + " " + lastName;
+    }
 }
