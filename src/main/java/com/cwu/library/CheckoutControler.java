@@ -242,7 +242,9 @@ public class CheckoutControler implements Searchable{
      */
     public void recieveData(List<String> data) {
         if(data.size() >=1) {
-            idTextBox.setText(data.get(0));
+            String firstData = data.get(0);
+            String parts[] = firstData.split(" ");
+            idTextBox.setText(parts[2]);
         }
     }
 

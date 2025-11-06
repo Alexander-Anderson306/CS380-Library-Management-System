@@ -64,10 +64,6 @@ public class BookSearchControler implements Popup {
         }
 
         //send data back to parent controller
-        String data = dataToSend.getFirst();
-        String split[] = data.split(" ");
-        dataToSend.clear();
-        dataToSend.add(split[2]);
         parentController.recieveData(dataToSend);
 
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
