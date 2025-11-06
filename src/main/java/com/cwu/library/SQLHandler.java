@@ -798,6 +798,21 @@ public class SQLHandler {
     }
 
     /**
+     * Removes all student-inventory relations for a given student id.
+     * @param studentId the student id to remove from the inventory.
+     */
+    public static void removeStudentInventory(int studentId) {
+        try {
+            PreparedStatement ps = conn.prepareStatement("DELETE FROM student_inventory WHERE student_id = ?");
+            ps.setInt(1, studentId);
+            ps.execute();
+            ps.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
      * Checks if an item is in the inventory.
      * @param itemId
      * @return true if in inventory, false otherwise.
