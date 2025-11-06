@@ -198,6 +198,114 @@ public class SQLHandler {
         return false;
     }
 
+    //-------------------------------Author Handling--------------------------------//
+    public static void addAuthor(Person author) {
+
+        if(authorExists(author.getFirstName(), author.getLastName())) {
+            return;
+        }
+
+        try {
+            PreparedStatement ps = conn.prepareStatement("INSERT INTO author (fname, lname) VALUES (?, ?)");
+            ps.setString(1, author.getFirstName());
+            ps.setString(2, author.getLastName());
+            ps.execute();
+            ps.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Deletes an author from the database.
+     * @param authorId
+     */
+    public static void deleteAuthor(int authorId) {
+        if(!authorExists(authorId)) {
+            return;
+        }
+
+        try {
+            PreparedStatement ps = conn.prepareStatement("DELETE FROM author WHERE author_id = ?");
+            ps.setInt(1, authorId);
+            ps.execute();
+            ps.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Gets the author ID from the database and sets it in the Person object.
+     * @param author
+     */
+    public static void getAuthorId(Person author) {
+        try {
+            PreparedStatement ps = conn.prepareStatement("SELECT author_id FROM author WHERE fname = ? AND lname = ?");
+            ps.setString(1, author.getFirstName());
+            ps.setString(2, author.getLastName());
+            ResultSet rs = ps.executeQuery();
+            if(rs.next()) {
+                author.setId(rs.getInt("author_id"));
+            }
+            rs.close();
+            ps.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Gets all books by the given author.
+     * @param author
+     * @return LinkedList<Item> of books by the author.
+     */
+    public static LinkedList<Item> getBooksByAuthor(Person author) {
+        LinkedList<Item> books = new LinkedList<>();
+        String sql  = """
+                        SELECT 
+                        b.book_id,
+                        b.title,
+                        b.publication_year,
+                        a.author_id,
+                        a.fname,
+                        a.lname
+                        FROM book b
+                        JOIN book_authors ba ON b.book_id = ba.book_id
+                        JOIN author a ON ba.author_id = a.author_id
+                        WHERE a.author_id = ?;
+                    """;
+
+        try {
+            //check if the author has an id
+            if(author.getId() == -1) {
+                return books;
+            }
+
+            //now get all books by that author
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, author.getId());
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()) {
+                Item current = new Item(rs.getInt("book_id"));
+                current.initializeBook(
+                    rs.getString("book_title"),
+                    rs.getInt("publication_year"),
+                    rs.getInt("isbn"),
+                    rs.getString("call_number")
+                );
+                books.add(current);
+            }
+            rs.close();
+            ps.close();
+
+            return books;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return books;
+    }
+
     //-------------------------------Existence Checking--------------------------------//
     /**
      * Checks if a book exists in the database.
@@ -261,10 +369,81 @@ public class SQLHandler {
         return false;
     }
 
+    /**
+     * Checks if an author exists in the database.
+     * @param authorId
+     * @return
+     */
     public static boolean authorExists(int authorId) {
         try {
             PreparedStatement ps = conn.prepareStatement("SELECT * FROM author WHERE author_id = ?");
             ps.setInt(1, authorId);
+            ResultSet rs = ps.executeQuery();
+            boolean exists = rs.next();
+            rs.close();
+            ps.close();
+            return exists;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    /**
+     * Checks if an author exists in the database.
+     * @param fname First name of the author
+     * @param lname Last name of the author
+     * @return
+     */
+    public static boolean authorExists(String fname, String lname) {
+        try {
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM author WHERE fname = ? AND lname = ?");
+            ps.setString(1, fname);
+            ps.setString(2, lname);
+            ResultSet rs = ps.executeQuery();
+            boolean exists = rs.next();
+            rs.close();
+            ps.close();
+            return exists;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    /**
+     * Checks if a book-author relation exists in the database.
+     * @param bookId
+     * @param authorId
+     * @return true if exists, false otherwise.
+     */
+    public static boolean bookAuthorsExist(int bookId, int authorId) {
+        try {
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM book_authors WHERE book_id = ? AND author_id = ?");
+            ps.setInt(1, bookId);
+            ps.setInt(2, authorId);
+            ResultSet rs = ps.executeQuery();
+            boolean exists = rs.next();
+            rs.close();
+            ps.close();
+            return exists;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    /**
+     * Checks if a student-inventory relation exists in the database.
+     * @param studentId
+     * @param itemId
+     * @return true if exists, false otherwise.
+     */
+    public static boolean studentInventoryExists(int studentId, int itemId) {
+        try {
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM student_inventory WHERE student_id = ? AND item_id = ?");
+            ps.setInt(1, studentId);
+            ps.setInt(2, itemId);
             ResultSet rs = ps.executeQuery();
             boolean exists = rs.next();
             rs.close();
@@ -464,6 +643,150 @@ public class SQLHandler {
             ps.execute();
             ps.close();
         } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Queries CDs from the database based on the attributes set in the cd parameter.
+     * @param cd
+     * @return LinkedList<Item> of CDs that match the query.
+     */
+    public static LinkedList<Item> queryCDs(Item cd) {
+        try {
+            //result list
+            LinkedList<Item> cds = new LinkedList<>();
+            //construct our query from what attributes are set in the cd parameter
+            String sql = "SELECT * FROM dvd WHERE 1=1";
+            if(cd.hasAttribute("title")) {
+                sql += " AND dvd_title LIKE ?";
+            }
+            if(cd.hasAttribute("publication_year")) {
+                sql += " AND publication_year = ?";
+            }
+            if(cd.hasAttribute("call_number")) {
+                sql += " AND call_number = ?";
+            }
+
+            //set the parameters
+            PreparedStatement ps = conn.prepareStatement(sql);
+            int index = 1;
+            if(cd.hasAttribute("title")) {
+                ps.setString(index++, "%" + cd.getAttribute("title") + "%");
+            }
+            if(cd.hasAttribute("publication_year")) {
+                ps.setInt(index++, Integer.parseInt(cd.getAttribute("publication_year")));
+            }
+            if(cd.hasAttribute("call_number")) {
+                ps.setString(index++, cd.getAttribute("call_number"));
+            }
+
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()) {
+                //create a new cd item
+                Item current = new Item(rs.getInt("dvd_id"));
+                current.initializeCD(
+                    rs.getString("dvd_title"),
+                    rs.getInt("publication_year"),
+                    rs.getString("call_number")
+                );
+                cds.add(current);
+            }
+            rs.close();
+            ps.close();
+
+            return cds;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    //-------------------------------Many to many handing--------------------------------//
+    /**
+     * Adds a book-author relation to the database.
+     * @param bookId
+     * @param authorId
+     */
+    public static void addBookAuthor(int bookId, int authorId) {
+        //check if the relation already exists
+        if(bookAuthorsExist(bookId, authorId)) {
+            return;
+        }
+
+        try {
+            PreparedStatement ps = conn.prepareStatement("INSERT INTO book_authors (book_id, author_id) VALUES (?, ?)");
+            ps.setInt(1, bookId);
+            ps.setInt(2, authorId);
+            ps.execute();
+            ps.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Removes a book-author relation from the database.
+     * @param bookId
+     * @param authorId
+     */
+    public static void removeBookAuthor(int bookId, int authorId) {
+        //check if the relation exists
+        if(!bookAuthorsExist(bookId, authorId)) {
+            return;
+        }
+
+        try {
+            PreparedStatement ps = conn.prepareStatement("DELETE FROM book_authors WHERE book_id = ? AND author_id = ?");
+            ps.setInt(1, bookId);
+            ps.setInt(2, authorId);
+            ps.execute();
+            ps.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Adds a student-inventory relation to the database.
+     * @param studentId
+     * @param itemId
+     */
+    public static void addStudentInventory(int studentId, int itemId) {
+        //check if the relation already exists
+        if(studentInventoryExists(studentId, itemId)) {
+            return;
+        }
+
+        try {
+            PreparedStatement ps = conn.prepareStatement("INSERT INTO student_inventory (student_id, item_id) VALUES (?, ?)");
+            ps.setInt(1, studentId);
+            ps.setInt(2, itemId);
+            ps.execute();
+            ps.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Removes a student-inventory relation from the database.
+     * @param studentId
+     * @param itemId
+     */
+    public static void removeStudentInventory(int studentId, int itemId) {
+        //check if the relation exists
+        if(!studentInventoryExists(studentId, itemId)) {
+            return;
+        }
+
+        try {
+            PreparedStatement ps = conn.prepareStatement("DELETE FROM student_inventory WHERE student_id = ? AND item_id = ?");
+            ps.setInt(1, studentId);
+            ps.setInt(2, itemId);
+            ps.execute();
+            ps.close();
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
