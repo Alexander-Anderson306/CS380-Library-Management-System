@@ -792,6 +792,52 @@ public class SQLHandler {
     }
 
     /**
+     * Checks if an item is in the inventory.
+     * @param itemId
+     * @return true if in inventory, false otherwise.
+     */
+    public static boolean itemInInventory(int itemId) {
+        try {
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM student_inventory WHERE item_id = ?");
+            ps.setInt(1, itemId);
+            ResultSet rs = ps.executeQuery();
+            boolean exists = rs.next();
+            rs.close();
+            ps.close();
+            return exists;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
+    /**
+     * Gets the student ID of the student who has checked out the item.
+     * @param itemId
+     * @return
+     */
+    public static int itemCheckedOutTo(int itemId) {
+        try {
+            PreparedStatement ps = conn.prepareStatement("SELECT student_id FROM student_inventory WHERE item_id = ?");
+            ps.setInt(1, itemId);
+            ResultSet rs = ps.executeQuery();
+            if(rs.next()) {
+                int studentId = rs.getInt("student_id");
+                rs.close();
+                ps.close();
+                return studentId;
+            }
+            rs.close();
+            ps.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return -1;
+    }
+
+    /**
      *  This subclass is used to intersect two sets of data (linked list) and return the common elements.
      */
     public class Intersect {

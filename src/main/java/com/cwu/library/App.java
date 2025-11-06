@@ -6,7 +6,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-
+import java.sql.Connection;
 import java.io.IOException;
 
 /**
@@ -70,7 +70,12 @@ public class App extends Application {
     }
 
     public static void main(String[] args) {
+        //conect to database first
+        //SQLHandler.loadDriver();
+        //Connection conn = SQLHandler.connect();
         launch();
+        //disconnect from database on exit
+        //SQLHandler.disconnect(conn);
     }
 
 }
