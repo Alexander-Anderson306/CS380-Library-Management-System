@@ -40,8 +40,7 @@ public class BookSearchControler implements Popup {
     private TextField yearTextBox;
 
     /**
-     * Confirms the selected book and sends it back to the parent controller. (Dont ask me why we are using a LinkedList for this
-     * there was a reason for this a while ago but I forgot and time is marching everforward on this assignment)
+     * Confirms the selected book and sends it back to the parent controller.
      * @param event
      */
     @FXML
@@ -65,6 +64,10 @@ public class BookSearchControler implements Popup {
         }
 
         //send data back to parent controller
+        String data = dataToSend.getFirst();
+        String split[] = data.split(" ");
+        dataToSend.clear();
+        dataToSend.add(split[2]);
         parentController.recieveData(dataToSend);
 
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -101,7 +104,7 @@ public class BookSearchControler implements Popup {
             return;
         }
 
-        if(title.length() > 128){
+        if(!title.isEmpty() && title.length() > 128){
             //invalid title
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Invalid Title");
@@ -111,7 +114,7 @@ public class BookSearchControler implements Popup {
             return;
         }
 
-        if(isbn.length() > 13){
+        if(!isbn.isEmpty() && isbn.length() > 13){
             //invalid isbn
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Invalid ISBN");
@@ -121,7 +124,7 @@ public class BookSearchControler implements Popup {
             return;
         }
 
-        if(year.length() > 4){
+        if(!year.isEmpty() && year.length() > 4){
             //invalid year
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Invalid Year");
@@ -131,7 +134,7 @@ public class BookSearchControler implements Popup {
             return;
         }
 
-        if(callNumber.length() > 128) {
+        if(!callNumber.isEmpty() && callNumber.length() > 128) {
             //invalid call number
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Invalid Call Number");
