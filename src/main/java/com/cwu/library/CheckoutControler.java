@@ -8,7 +8,6 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -285,7 +284,7 @@ public class CheckoutControler implements Searchable{
         String fullName = nameTextBox.getText();
         String [] nameParts = fullName.split(" ");
         //invalid name
-        if(nameParts.length < 2 || nameParts[0].isEmpty() || nameParts[1].isEmpty() || nameParts[0].length() > 32 || nameParts[1].length() > 32) {
+        if(nameParts.length != 2 || nameParts[0].isEmpty() || nameParts[1].isEmpty() || nameParts[0].length() > 32 || nameParts[1].length() > 32) {
             return null;
         }
 

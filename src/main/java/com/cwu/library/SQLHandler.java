@@ -279,7 +279,13 @@ public class SQLHandler {
         try {
             //check if the author has an id
             if(author.getId() == -1) {
-                return books;
+                //see if this author exist
+                if(!authorExists(author.getFirstName(), author.getLastName())) {
+                    //author does not exist no books to return
+                    return books;
+                }
+                //get the author id
+                getAuthorId(author);
             }
 
             //now get all books by that author
